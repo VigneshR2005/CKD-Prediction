@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKD Prediction</title>
+</head>
+<body>
+    <h1>Chronic Kidney Disease (CKD) Prediction</h1>
+    <form id="predictionForm">
+        <label for="Bp">Blood Pressure:</label>
+        <input type="number" step="0.01" id="Bp" name="Bp" required><br><br>
+
+        <label for="Sg">Specific Gravity:</label>
+        <input type="number" step="0.001" id="Sg" name="Sg" required><br><br>
+
+        <label for="Al">Albumin:</label>
+        <input type="number" step="0.1" id="Al" name="Al" required><br><br>
+
+        <label for="Su">Sugar:</label>
+        <input type="number" step="0.1" id="Su" name="Su" required><br><br>
+
+        <label for="Rbc">Red Blood Cells:</label>
+        <input type="number" step="0.1" id="Rbc" name="Rbc" required><br><br>
+
+        <label for="Bu">Blood Urea:</label>
+        <input type="number" step="0.1" id="Bu" name="Bu" required><br><br>
+
+        <label for="Sc">Serum Creatinine:</label>
+        <input type="number" step="0.1" id="Sc" name="Sc" required><br><br>
+
+        <label for="Sod">Sodium:</label>
+        <input type="number" step="0.01" id="Sod" name="Sod" required><br><br>
+
+        <label for="Pot">Potassium:</label>
+        <input type="number" step="0.01" id="Pot" name="Pot" required><br><br>
+
+        <label for="Hemo">Hemoglobin:</label>
+        <input type="number" step="0.1" id="Hemo" name="Hemo" required><br><br>
+
+        <label for="Wbcc">White Blood Cell Count:</label>
+        <input type="number" step="0.1" id="Wbcc" name="Wbcc" required><br><br>
+
+        <label for="Rbcc">Red Blood Cell Count:</label>
+        <input type="number" step="0.1" id="Rbcc" name="Rbcc" required><br><br>
+
+        <label for="Htn">Hypertension (1 for Yes, 0 for No):</label>
+        <input type="number" step="1" id="Htn" name="Htn" required><br><br>
+
+        <button type="button" onclick="predictCKD()">Predict CKD</button>
+    </form>
+
+    <h2 id="result"></h2>
+
+    <script>
+        async function predictCKD() {
+            const formData = new FormData(document.getElementById("predictionForm"));
+            const data = Object.fromEntries(formData.entries());
+
+            // Ensure numerical values for all fields
+            for (let key in data) {
+                data[key] = parseFloat(data[key]);
+            }
+
+            // Send data to server (placeholder, requires backend implementation)
+            const response = await fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            document.getElementById("result").innerText = result.prediction === 1 
+                ? "CKD Detected" : "No CKD Detected";
+        }
+    </script>
+</body>
+</html>
